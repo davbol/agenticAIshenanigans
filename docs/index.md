@@ -345,6 +345,6 @@ Finally, it's important to recognize that these two patterns are not mutually ex
 
 ## References
 
-- [1]: Amazon's API Mandate: https://konghq.com/blog/enterprise/api-mandate
-- [2]: A2A protocol: https://www.a2aprotocol.org/de
-- [3]: MCP protocol: https://modelcontextprotocol.io/introduction
+[^1]: Amazon's API Mandate: https://konghq.com/blog/enterprise/api-mandate  
+[^2]: A2A protocol: https://www.a2aprotocol.org/de  
+[^3]: MCP protocol: https://modelcontextprotocol.io/introduction
