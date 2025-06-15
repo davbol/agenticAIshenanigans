@@ -8,7 +8,7 @@ nav_order: 1
 
 ```
 Ongoing work. Issues to be fixed:
-- [ ] Code examples have some room for improvement
+- [ ] Code examples have room for improvement
 ```
 
 ## Introduction
@@ -99,7 +99,6 @@ agent_card = AgentCard(
         )
     ]
 )
-
 ```
 
 #### Agent-to-Agent Server:
@@ -260,7 +259,6 @@ tools = [
 
 # Instantiate MCPServer
 mcp_server = MCPServer(tools=tools)
-
 ```
 
 #### Agent Consuming the Tool:
@@ -292,7 +290,6 @@ if response.tool_calls:
     
     # The agent would then process the output
     print(tool_output) #> {'id': '67890', 'name': 'Dark Cloud Running Shoe', 'price': 150}
-
 ```
 
 ### Additional Considerations for this Approach
