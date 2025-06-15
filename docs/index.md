@@ -87,7 +87,7 @@ agent_card = AgentCard(
     name="Product Manager Agent",
     description="An agent that wrapps the Product API",
     version="1.0.0",
-    endpoint="https://agent-endpoint.com/a2a
+    endpoint="https://agent-endpoint.com/a2a",
     skills=[
         AgentSkill(
             name="update_last_product_price",
