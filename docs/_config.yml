@@ -5,5 +5,7 @@ plugins:
   - jekyll-remote-theme
 
 # Enable Mermaid
-just_the_docs:
-  mermaid: true
+mermaid:
+  # Version of mermaid library to load
+  # Pick an available version from https://cdn.jsdelivr.net/npm/mermaid/
+  version: "10.6.1" # Or any other stable version you prefer, check the link above for the latest
