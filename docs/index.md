@@ -207,8 +207,9 @@ graph TD
 
 #### MCP Server Definition
 
+The MCP server definition could look something like this:
+
 ```python
-# mcp_server.py
 from product_api_client import ProductAPIClient
 
 class MCPServer:
