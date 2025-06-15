@@ -1,12 +1,17 @@
-# How should agent integrate with existing APIs?
+# How should AI Agents Integrate with Existing APIs?
+
+```
+Ongoing work. Issues to be fixed:
+- [ ] Code examples have some room for improvement
+```
 
 ## Introduction
-In the world of enterprise IT with a network of hundreds or thousands of applications and microservices. APIs are the essential connective tissue that allows disparate systems to communicate, share data, and trigger actions. As Jeff Bezos famously mandated at Amazon, every piece of functionality should be designed to be exposed through an API (1). This principle has become a cornerstone of modern software architecture.
+In the world of enterprise IT with a network of hundreds or thousands of applications and microservices, APIs are the essential connective tissue that allows disparate systems to communicate, share data, and trigger actions. As Jeff Bezos famously mandated at Amazon, every piece of functionality should be designed to be exposed through an API [1]. This principle has become a cornerstone of modern software architecture.
 
-In recent months, a new paradigm seems to be emerging: agentic AI based on intelligent agents. These autonomous software entities, powered by large language models (LLMs), promise to revolutionize how we build and interact with IT systems. Although still largely aspirational, proponents of agentic AI make a compelling case: Agents can understand natural language as powerful and flexible way of expressing intents, reason about complex problems, and execute multi-step tasks. This raises a critical question for any IT architect: how do we integrate agents with the vast ecosystem of existing systems through their APIs? Simply rebuilding all established, often complex and well-working systems is not an option and integrating agents with systems will be critical for the success of agents.
+In recent months, a new architecture paradigm seems to be emerging: agentic AI. Agents as autonomous software entities, powered by large language models (LLMs), promise to revolutionize how we build and interact with IT systems. Although still largely aspirational, proponents of agentic AI make a compelling case: Agents can understand natural language as powerful and flexible way of expressing intents, reason about complex problems, and execute multi-step tasks. This raises a critical question for every software and IT architect: how do we integrate agents with the vast ecosystem of existing systems through their APIs? Simply rebuilding all established, often complex and well-working systems is not an option and integrating agents with systems will be critical for the success of agents.
 
 ## Product System Case Study
-This article explores two approaches for bridging the gap between agents and APIs, using a simple example. 
+This article explores two approaches for bridging the gap between agents and APIs, using a simple case study. 
 
 Let's assume we have a standard application for managing a product catalog. It exposes basic CRUD endpoints:
 - `GET /products/{product_id}`: Retrieve a product.
@@ -65,7 +70,7 @@ class ProductAPIAgent(Agent):
             return "I don't have a record of the last product added."
         try:
             product = self.api_client.get_product(self.last_added_product_id)
-            new_price = product['price'] * (1 + percentage_increase / 100)
+            new_price = product['price'] * (1 + percentage_increase / 100) # this could also be done using a dedicated tool
             self.api_client.update_product(self.last_added_product_id, price=new_price)
             return f"Updated product {self.last_added_product_id}'s price to CHF {new_price:.2f}."
         except Exception as e:
@@ -93,7 +98,7 @@ agent_card = AgentCard(
 
 #### Agent-to-Agent Server:
 
-This simple server routes A2A requests (see 1) to the agent. The consumer agent sends a message intended for the `ProductAPIAgent`, and the server ensures it gets there.
+This simple server routes A2A requests [2] to the agent. The consumer agent sends a message intended for the `ProductAPIAgent`, and the server ensures it gets there.
 
 ```python
 from product_api_agent import ProductAPIAgent
@@ -151,7 +156,7 @@ print(result0) #> I don't have a record of the last product added.
 # Create a task request
 create_product_task_request = TaskRequest(
     skill="create_product",
-    inputs={"name": "SuperWidget", "price": 99.99}
+    inputs={"name": "Dark Cloud Running Shoe", "price": 99.99}
 )
 
 # Send a task to the agent
@@ -162,7 +167,7 @@ task1 = a2a_client.create_task(
 
 # Get the task result
 result1 = a2a_client.wait_for_task_result(task1.id)
-print(result1) #> Successfully created product 'SuperWidget' with ID 12345.
+print(result1) #> Successfully created product 'Dark Cloud Running Shoe' with ID 12345.
 
 # 2) Now, the agent remembers the last product.
 
@@ -179,7 +184,7 @@ Many enterprises already publish a comprehensive OpenAPI (formerly Swagger) spec
 
 ## Approach 2: The MCP Server as a Tool Provider
 
-The second approach is to expose the API as a "tool" that any authorized agent can use. Here, the Model Context Protocol (MCP - see 2) from Antropic is used. The MCP Server acts as a standard approach for accessing the tool - in this case, the API. It doesn't add conversational intelligence itself but provides a standardized way for agents to discover and execute functions. 
+The second approach is to expose the API as a "tool" that any authorized agent can use. Here, the Model Context Protocol (MCP [3]) from Antropic is used. The MCP Server acts as a standard approach for accessing the tool - in this case, the API. It doesn't add conversational intelligence itself but provides a standardized way for agents to discover and execute functions. 
 
 ### Overview
 
@@ -265,7 +270,7 @@ mcp_server = MCPServer(tools=tools)
 # The LLMClient is configured with the tools from the MCP Server
 llm_client = LLMClient(tools=mcp_server.tools)
 
-prompt = "Please create a product called 'MegaWidget' that costs CHF 150."
+prompt = "Please create a product called 'Dark Cloud Running Shoe' that costs CHF 150."
 
 # The LLM processes the prompt and determines it needs to call a tool
 response = llm_client.chat(prompt)
@@ -274,13 +279,13 @@ response = llm_client.chat(prompt)
 if response.tool_calls:
     tool_call = response.tool_calls[0]
     function_name = tool_call.function.name # "create_product"
-    function_args = tool_call.function.arguments # {"name": "MegaWidget", "price": 150}
+    function_args = tool_call.function.arguments # {"name": "Dark Cloud Running Shoe", "price": 150}
     
     # Find the corresponding callable function and execute it
     tool_output = mcp_server.execute_tool(function_name, **function_args)
     
     # The agent would then process the output
-    print(tool_output) #> {'id': '67890', 'name': 'MegaWidget', 'price': 150}
+    print(tool_output) #> {'id': '67890', 'name': 'Dark Cloud Running Shoe', 'price': 150}
 
 ```
 
@@ -298,15 +303,16 @@ As a lightweight alternative to a full MCP, “function-calling” support—now
 ## Comparison
 
 ### High Level Comparison
-Let's now compare the two approaches.
+Let's now compare the two approaches:
 
-| Dimension | Wrapper Agent Approach | MCP Server / Tool Approach |
+| **Dimension** | **API Wrapper Agent Approach** | **MCP Server / Tool Approach** |
 | :--- | :--- | :--- |
-| **Autonomy** | **High**. The agent can manage complex, multi-step workflows, make decisions, and retry failed operations on its own. | **Low**. The agent primarily performs direct function calls through the tool. Autonomy is limited to the LLM's ability to sequence tool calls. |
-| **Complexity** | **High**. Requires developing and maintaining a stateful, intelligent agent in addition to the underlying API. | **Low**. Simpler to implement. It mainly involves creating a tool based on existing documentation (e.g., OpenAPI spec). |
-| **Performance** | **Slower**. Often requires multiple model calls: one to understand the user's intent and another to formulate the final response. | **Faster**. Typically requires only one model call to determine which tool to use. The rest is a direct, fast API call. |
-| **Costs** | **More expensive**. Requires multiple model calls leading to a higher token count. | **Less expensive**. Typically requires only one model call with likely a lower token count. |
-| **Operating Effort** | **Higher**. Running and monitoring a fleet of agents and agent servers leads to significant operational effort. | **Lower**. MCP Servers are a relatively simple, stateless application that are easier to operate and scale. |
+| **🧠 Autonomy** | **High**. The agent can manage complex, multi-step workflows, make decisions, and retry failed operations on its own. | **Low**. The agent primarily performs direct function calls through the tool. Autonomy is limited to the LLM's ability to sequence tool calls. |
+| **🧩 Complexity** | **High**. Requires developing and maintaining a stateful, intelligent agent in addition to the underlying API. | **Low**. Simpler to implement. It mainly involves creating a tool based on existing documentation (e.g., OpenAPI spec). |
+| **⚡ Performance** | **Slower**. Typically requires multiple model calls: one to understand the intent and another to formulate the final response. | **Faster**. Typically requires only one model call to determine which tool to use. The rest is a direct, fast API call. |
+| **💰 Costs** | **More expensive**. Typically requires multiple model calls leading to a higher token count. | **Less expensive**. Typically requires only one model call with likely a lower token count. |
+| **🛠️ Operating Effort** | **Higher**. Running and monitoring a fleet of agents and agent servers leads to significant operational effort. | **Lower**. MCP Servers are a relatively simple, stateless application that are easier to operate and scale. |
+
 
 ### Comparing Additional Design Aspects
 Additional considerations worth mentioning include:
@@ -330,10 +336,10 @@ Use the API Wrapper Agent approach when the underlying task is a more complex wo
 
 Use the MCP Server / Tool approach when you need to expose simple, stateless functions and if the complexity of the underlying API is limited. If you just want an agent to be able to create a user, get a stock price, or retrieve a product by its ID, exposing the API as a tool is fast, efficient, and easy to maintain. Access to data sources via other mechanisms (e.g., directly accessing a database that has no API or a document) is an additional use case that was not covered in this article.
 
-Finally, it's important to recognize that these two patterns are not mutually exclusive. You can create a powerful hybrid: an intelligent agent that itself exposes a tool interface.
+Finally, it's important to recognize that these two patterns are not mutually exclusive. You can create a hybrid: an intelligent agent that itself exposes a tool interface.
 
 ## References
 
-- (1) https://konghq.com/blog/enterprise/api-mandate
-- (2) A2A protocol: https://www.a2aprotocol.org/de
-- (3) MCP protocol: https://modelcontextprotocol.io/introduction
+- [1]: Amazon's API Mandate: https://konghq.com/blog/enterprise/api-mandate
+- [2]: A2A protocol: https://www.a2aprotocol.org/de
+- [3]: MCP protocol: https://modelcontextprotocol.io/introduction
