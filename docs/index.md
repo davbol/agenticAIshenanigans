@@ -185,11 +185,11 @@ print(result2) #> Updated product 12345's price to CHF 109.99.
 
 #### OAS as starting point
 
-Many enterprises already publish a comprehensive OpenAPI (formerly Swagger) spec for their REST services and AsyncAPI Specs for asynchronous APIs.  While defining the code for the agent might look like significant work and its it not yet clear how versioning would work, it is likely that options will become available that allow the generation and updating of agents based on OpenAPI Specs.
+Many enterprises already publish a comprehensive OpenAPI (formerly Swagger) spec for their REST services and AsyncAPI Specs for asynchronous APIs.  While defining the code for the agent might look like significant work and its it not yet clear how versioning would work, it is likely that options will become available that allow the generation and updating of agents based on OAS and other standardized specifications.
 
 ## Approach 2: The MCP Server as a Tool Provider
 
-The second approach is to expose the API as a "tool" that any authorized agent can use. Here, the Model Context Protocol (MCP [3]) from Antropic is used. The MCP Server acts as a standard approach for accessing the tool - in this case, the API. It doesn't add conversational intelligence itself but provides a standardized way for agents to discover and execute functions. 
+The second approach is to expose the API as a "tool" that any authorized agent can use. Here, the de-facto standard Model Context Protocol (MCP [3]) from Antropic is used. The MCP Server acts as a standard approach for accessing the tool - in this case, the API. It doesn't add conversational intelligence itself but provides a standardized way for agents to discover and execute functions. 
 
 ### Overview
 
@@ -197,7 +197,7 @@ Again a high-level overview of the architecture:
 
 ```mermaid 
 graph TD
-    A[Agent] -- Discovers & Executes --> B(MCP Server);
+    A[Consuming Agent] -- Discovers & Executes --> B(MCP Server);
     B -- HTTP Requests --> D(CRUD Product API);
     D -- JSON Responses --> B;
     B -- Tool Output --> A;
