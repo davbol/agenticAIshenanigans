@@ -1,2 +1,8 @@
-markdown: kramdown
-theme: jekyll-theme-cayman
+remote_theme: just-the-docs/just-the-docs
+color_scheme: light
+plugins:
+  - jekyll-remote-theme
+
+# Enable Mermaid
+just_the_docs:
+  mermaid: true
