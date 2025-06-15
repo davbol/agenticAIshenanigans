@@ -46,7 +46,7 @@ graph TD
 
 ### Sample implementation
 
-#### Agent Definition (using Google’s Agent Development Kit - ADK):
+#### Agent Definition (using Google’s Agent Development Kit - ADK)
 
 This agent understands how to interact with the Product API. It maintains a (in this example very basic) memory of its interactions to handle conversational context.
 
@@ -101,7 +101,7 @@ agent_card = AgentCard(
 )
 ```
 
-#### Agent-to-Agent Server:
+#### Agent-to-Agent Server
 
 This simple server routes A2A requests [2] to the agent. The consumer agent sends a message intended for the `ProductAPIAgent`, and the server ensures it gets there.
 
@@ -205,7 +205,7 @@ graph TD
 
 ### Sample implementation
 
-#### MCP Server Definition:
+#### MCP Server Definition
 
 ```python
 # mcp_server.py
@@ -261,7 +261,7 @@ tools = [
 mcp_server = MCPServer(tools=tools)
 ```
 
-#### Agent Consuming the Tool:
+#### Agent Consuming the Tool
 
 The agent is configured to use the tools from the MCP Server. When given a task, its underlying LLM determines which tool to call and with what parameters.
 
