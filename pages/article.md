@@ -24,15 +24,14 @@ Imagine a user asking, "That last product I added, can you increase its price by
 ### Overview
 Here’s a high-level architectural overview of the design:
 
-::: mermaid
+```mermaid
 graph TD
     A[Consuming Agent] -- A2A Task --> B(Product API Wrapper Agent);
     B -- HTTP Requests --> C(CRUD Product API);
     C -- JSON Responses --> B;
     B -- Task Result --> A;
     B -. Optional Tool Usage .-> D(Pricing Calculator Tool);
-
-:::
+```
 
 ### Sample implementation
 
@@ -186,13 +185,13 @@ The second approach is to expose the API as a "tool" that any authorized agent c
 
 Again a high-level overview of the architecture:
 
-::: mermaid 
+```mermaid 
 graph TD
     A[Agent] -- Discovers & Executes --> B(MCP Server);
     B -- HTTP Requests --> D(CRUD Product API);
     D -- JSON Responses --> B;
     B -- Tool Output --> A;
-:::
+```
 
 ### Sample implementation
 
