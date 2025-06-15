@@ -1,3 +1,8 @@
+---
+layout: default
+title: How should AI Agents Integrate with Existing APIs?
+---
+
 # How should AI Agents Integrate with Existing APIs?
 
 ```
