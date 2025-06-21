@@ -6,11 +6,6 @@ nav_order: 1
 
 # How should AI Agents Integrate with Existing APIs?
 
-```
-Ongoing work. Issues to be fixed:
-- [ ] Code examples have room for improvement
-```
-
 ## Introduction
 In the world of enterprise IT with a network of hundreds or thousands of applications and microservices, APIs are the essential connective tissue that allows disparate systems to communicate, share data, and trigger actions. As Jeff Bezos famously mandated at Amazon, every piece of functionality should be designed to be exposed through an API [1]. This principle has become a cornerstone of modern software architecture.
 
